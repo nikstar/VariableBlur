@@ -7,9 +7,9 @@ _First of all, all hard work was done by **[jtrivedi](https://github.com/jtrived
 
 Changes in this version:
 
-- [x] all code is in one file
+- [x] all code is in **one file**
 - [x] dynamically generates gradient image allowing for further adjustments
-- [x] fixes crash when switching between light and dark theme
+- [x] fixes crash when switching between light and dark mode
 - [x] supports upside down variable blurs (clear at the top, blurred at the bottom)
 
 Use of private API did not trigger App Store rejection for me but do tell if it does for you. 
