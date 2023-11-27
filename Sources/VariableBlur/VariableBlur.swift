@@ -14,11 +14,14 @@ public enum VariableBlurDirection {
 public struct VariableBlurView: UIViewRepresentable {
     
     public var maxBlurRadius: CGFloat = 20
-    public var startOffset: CGFloat = -0.1
+    
     public var direction: VariableBlurDirection = .blurredTopClearBottom
     
+    /// By default, variable blur starts from 0 blur radius and linearly increases to `maxBlurRadius`. Setting `startOffset` to a small negative coefficient (e.g. -0.1) will start blur from larger radius value which might look better in some cases.
+    public var startOffset: CGFloat = 0
+    
     public func makeUIView(context: Context) -> VariableBlurUIView {
-        VariableBlurUIView(maxBlurRadius: maxBlurRadius, startOffset: startOffset, direction: direction)
+        VariableBlurUIView(maxBlurRadius: maxBlurRadius, direction: direction, startOffset: startOffset)
     }
 
     public func updateUIView(_ uiView: VariableBlurUIView, context: Context) {
@@ -29,7 +32,7 @@ public struct VariableBlurView: UIViewRepresentable {
 /// credit https://github.com/jtrivedi/VariableBlurView
 open class VariableBlurUIView: UIVisualEffectView {
 
-    public init(maxBlurRadius: CGFloat = 20, startOffset: CGFloat = -0.1, direction: VariableBlurDirection = .blurredTopClearBottom) {
+    public init(maxBlurRadius: CGFloat = 20, direction: VariableBlurDirection = .blurredTopClearBottom, startOffset: CGFloat = 0) {
         super.init(effect: UIBlurEffect(style: .regular))
 
         // `CAFilter` is a private QuartzCore class that we dynamically declare in `CAFilter.h`.
@@ -55,13 +58,19 @@ open class VariableBlurUIView: UIVisualEffectView {
         backdropLayer?.filters = [variableBlur]
         
         // Get rid of the visual effect view's dimming/tint view, so we don't see a hard line.
-        for subview in subviews[1...] {
+        for subview in subviews.dropFirst() {
             subview.alpha = 0
         }
     }
 
     required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    open override func didMoveToWindow() {
+        // fixes visible pixelization at unblurred edge (https://github.com/nikstar/VariableBlur/issues/1)
+        guard let window, let backdropLayer = subviews.first?.layer else { return }
+        backdropLayer.setValue(window.screen.scale, forKey: "scale")
     }
     
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
