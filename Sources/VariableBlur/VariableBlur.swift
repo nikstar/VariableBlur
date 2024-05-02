@@ -35,12 +35,15 @@ open class VariableBlurUIView: UIVisualEffectView {
     public init(maxBlurRadius: CGFloat = 20, direction: VariableBlurDirection = .blurredTopClearBottom, startOffset: CGFloat = 0) {
         super.init(effect: UIBlurEffect(style: .regular))
 
-        // `CAFilter` is a private QuartzCore class that we dynamically declare in `CAFilter.h`.
-        //             let variableBlur = CAFilter.filter(withType: "variableBlur") as! NSObject
-
-        // Same but no need for `CAFilter.h`.
-        let CAFilter = NSClassFromString("CAFilter")! as! NSObject.Type
-        let variableBlur = CAFilter.self.perform(NSSelectorFromString("filterWithType:"), with: "variableBlur").takeRetainedValue() as! NSObject
+        // `CAFilter` is a private QuartzCore class that dynamically create using Objective-C runtime.
+        guard let CAFilter = NSClassFromString("CAFilter")! as? NSObject.Type else {
+            print("[VariableBlur] Error: Can't find CAFilter class")
+            return
+        }
+        guard let variableBlur = CAFilter.self.perform(NSSelectorFromString("filterWithType:"), with: "variableBlur").takeUnretainedValue() as? NSObject else {
+            print("[VariableBlur] Error: CAFilter can't create filterWithType: variableBlur")
+            return
+        }
 
         // The blur radius at each pixel depends on the alpha value of the corresponding pixel in the gradient mask.
         // An alpha of 1 results in the max blur radius, while an alpha of 0 is completely unblurred.
@@ -91,5 +94,3 @@ open class VariableBlurUIView: UIVisualEffectView {
         return CIContext().createCGImage(ciGradientFilter.outputImage!, from: CGRect(x: 0, y: 0, width: width, height: height))!
     }
 }
-
-
