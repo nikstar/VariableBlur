@@ -79,7 +79,7 @@ open class VariableBlurUIView: UIVisualEffectView {
     open override func didMoveToWindow() {
         // fixes visible pixelization at unblurred edge (https://github.com/nikstar/VariableBlur/issues/1)
         guard let window, let backdropLayer = subviews.first?.layer else { return }
-        backdropLayer.setValue(window.screen.scale, forKey: "scale")
+        backdropLayer.setValue(window.traitCollection.displayScale, forKey: "scale")
     }
     
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
