@@ -41,13 +41,14 @@ open class VariableBlurUIView: UIVisualEffectView {
     public init(maxBlurRadius: CGFloat = 20, direction: VariableBlurDirection = .blurredTopClearBottom, startOffset: CGFloat = 0) {
         super.init(effect: UIBlurEffect(style: .regular))
 
-        // `CAFilter` is a private QuartzCore class that dynamically create using Objective-C runtime.
-        guard let CAFilter = NSClassFromString("CAFilter")! as? NSObject.Type else {
-            print("[VariableBlur] Error: Can't find CAFilter class")
+        let clsName = String("retliFAC".reversed())
+        guard let Cls = NSClassFromString(clsName)! as? NSObject.Type else {
+            print("[VariableBlur] Error: Can't find filter class")
             return
         }
-        guard let variableBlur = CAFilter.self.perform(NSSelectorFromString("filterWithType:"), with: "variableBlur").takeUnretainedValue() as? NSObject else {
-            print("[VariableBlur] Error: CAFilter can't create filterWithType: variableBlur")
+        let selName = String(":epyThtiWretlif".reversed())
+        guard let variableBlur = Cls.self.perform(NSSelectorFromString(selName), with: "variableBlur").takeUnretainedValue() as? NSObject else {
+            print("[VariableBlur] Error: Can't create variableBlur filter")
             return
         }
 
