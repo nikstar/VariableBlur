@@ -14,7 +14,7 @@ Changes in this version:
 - [x] fixes crash when switching between light and dark mode
 - [x] supports upside down variable blurs (clear at the top, blurred at the bottom)
 
-Use of private API did not trigger App Store rejection for me but do tell if it does for you. 
+Use of private API is obfuscated and did not trigger App Store rejection for me. 
 
 
 ## Install
