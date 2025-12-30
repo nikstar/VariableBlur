@@ -63,3 +63,7 @@ ContentView()
         }
     }
 ```
+
+## New: BackgroundBlur
+
+Add background blur without any additional effects. See example in [BackgroundBlur.swift](https://github.com/nikstar/VariableBlur/blob/main/Sources/VariableBlur/BackgroundBlur.swift).
