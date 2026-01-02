@@ -66,4 +66,17 @@ ContentView()
 
 ## New: BackgroundBlur
 
-Add background blur without any additional effects. See example in [BackgroundBlur.swift](https://github.com/nikstar/VariableBlur/blob/main/Sources/VariableBlur/BackgroundBlur.swift).
+Add background blur without any additional effects. See [BackgroundBlur.swift](https://github.com/nikstar/VariableBlur/blob/main/Sources/VariableBlur/BackgroundBlur.swift).
+
+```swift
+HStack(spacing: 0) {
+    Color.blue
+    Color.blue.opacity(0.2)
+}
+.overlay {
+    BackgroundBlur(radius: 20)
+        .frame(width: 200, height: 100)
+        .clipShape(.capsule)
+}
+.ignoresSafeArea()
+```
